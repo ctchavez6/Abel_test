@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import os.path
+from scipy import ndimage as nd
 import numpy as np
 import matplotlib.pyplot as plt
 import abel
@@ -25,23 +26,24 @@ import cv2 as cv
 # https://imagej.nih.gov/ij/
 
 # Specify the path to the file
-filename = 'PATH_TO_FILE_HERE'
-
+filename = 'D:/1DataAnalysis/April_first/Timing/14/phi_minus_background_circ.png'
 
 # Step 1: Load an image file as a numpy array
 print('Loading ' + filename)
 raw_data = plt.imread(filename).astype('float64')
+
 src = cv.imread(cv.samples.findFile(filename), cv.IMREAD_COLOR)
+src = nd.rotate(src,4.35)
 src_gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)  # converts to grayscale
-print(np.shape(raw_data))
+
 # Step 2: Specify the origin in (row, col) format
-# origin = (320, 320)
+# origin = (1,170)
 # or, use automatic centering
 origin = 'com'
 # origin = 'gaussian'
 
 # Step 3: perform the BASEX transform!
-print('Performing the inverse Abel transform:')
+
 
 recon = abel.Transform(src_gray, direction='inverse', method='basex').transform
 recon2 = abel.Transform(src_gray, direction='inverse', method = 'hansenlaw').transform
@@ -65,4 +67,5 @@ fig.add_trace(
     row=1, col=3)
 
 fig.show()
+
 
