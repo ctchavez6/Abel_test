@@ -46,6 +46,11 @@ origin = 'com'
 
 
 recon = abel.Transform(src_gray, direction='inverse', method='basex').transform
+print(np.shape(recon))
+new = np.where(recon[:][:]<4,recon[:][:],4)
+new = np.where(new[:][:]>-2,new[:][:],-2)
+
+
 recon2 = abel.Transform(src_gray, direction='inverse', method = 'hansenlaw').transform
 
 
@@ -59,7 +64,7 @@ fig.add_trace(
 
 
 fig.add_trace(
-    go.Surface(z = recon, colorscale='Viridis', showscale=False),
+    go.Surface(z = new, colorscale='Viridis', showscale=False),
     row=1, col=2)
 
 fig.add_trace(
@@ -67,5 +72,6 @@ fig.add_trace(
     row=1, col=3)
 
 fig.show()
+print(np.max(new),np.min(new))
 
 
